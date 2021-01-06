@@ -1,7 +1,7 @@
 package models
 
 type Role struct {
-	ID          int
+	ID          int 	`gorm:"primarykey"`
 	Name        string        `gorm:"column:NAME"`
 	ZoneID      int           `gorm:"column:ZONE_ID"`
 	Code        string        `gorm:"column:CODE"`
