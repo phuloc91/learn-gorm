@@ -1,12 +1,15 @@
 package dbConfig
 
 import (
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
-
-	"github.com/jinzhu/gorm"
 )
 
 // DB db connection
@@ -19,6 +22,17 @@ type DBConfig struct {
 	User     string `json:"user"`
 	DBName   string `json:"database"`
 	Password string `json:"password"`
+}
+
+func InitConnection() {
+	db, err := gorm.Open(mysql.Open(DbURL(BuildDBConfig())), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	})
+	if err != nil {
+		log.Fatal("Khong ket noi duoc den DB thi chay lam d gi")
+		return
+	}
+	DB = db
 }
 
 func BuildDBConfig() *DBConfig {
@@ -37,6 +51,7 @@ func BuildDBConfig() *DBConfig {
 }
 
 func DbURL(dbConfig *DBConfig) string {
+	// dsn := "user:pass@tcp(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local"
 	return fmt.Sprintf(
 		"%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
 		dbConfig.User,
