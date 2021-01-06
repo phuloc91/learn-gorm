@@ -1,7 +1,7 @@
 package models
 
 type API struct {
-	ID     int
+	ID     int	 `gorm:"primarykey"`
 	API    string `gorm:"column:API"`
 	Method string `gorm:"column:METHOD"`
 	Status int    `gorm:"column:STATUS"`
