@@ -12,7 +12,7 @@ var Permissions []models.Permission
 // GetPermissons find all permission by zone id
 func GetPermissons(zoneID int) []models.Permission {
 	if Permissions == nil {
-		if err := dbConfig.DB.Where("zone_id = ?", zoneID).Find(&Permissions).Error; err != nil {
+		if err := dbConfig.DB.Preload("APIS").Preload("Roles").Where("zone_id = ?", zoneID).Find(&Permissions).Error; err != nil {
 			utils.Check(err)
 		}
 	}
